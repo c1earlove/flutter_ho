@@ -24,8 +24,10 @@ class _HomePageState extends State<HomePage> {
           children: [
             HomeItemPage(flag: 1),
             HomeItemPage(flag: 2),
-            HomeItemPage(flag: 3),
-            HomeItemPage(flag: 4),
+            Text("这是页面3"),
+            Text("这是页面4"),
+            // HomeItemPage(flag: 3),
+            // HomeItemPage(flag: 4),
           ],
         ),
       ),

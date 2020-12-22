@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ho/src/pages/home_page/list_video_item.dart';
+import 'package:flutter_ho/src/pages/home_page/list_video_item2.dart';
 import 'package:flutter_ho/src/utils/log_util.dart';
 import 'package:video_player/video_player.dart';
 
@@ -66,13 +67,24 @@ class _HomeItemPageState extends State<HomeItemPage> {
           cacheExtent: 0,
           itemCount: 10,
           itemBuilder: (BuildContext context, int index) {
-            return ListVideoItem(
-              streamController: _streamController,
-              isSroll: _isScroll,
-            );
+            return buildListItemFunction();
           },
         ),
       ),
     );
+  }
+
+  Widget buildListItemFunction() {
+    if (widget.flag == 1) {
+      return ListVideoItem(
+        streamController: _streamController,
+        isSroll: _isScroll,
+      );
+    } else {
+      return ListVideoItem2(
+        streamController: _streamController,
+        isSroll: _isScroll,
+      );
+    }
   }
 }
