@@ -80,7 +80,16 @@ class _VideoDetailWidgetState extends State<VideoDetailWidget> {
               if (widget.streamController != null) {
                 widget.streamController.add(_controller);
               }
-
+              // 视频总长度
+              Duration duration = _controller.value.duration;
+              // 当前视频播放的长度
+              Duration postion = _controller.value.position;
+              if (duration == postion) {
+                // 视频总长度 = 当前长度  说明视频已经播放完成
+                //把播放长度重置为0 就可以继续播放
+                _controller.seekTo(Duration.zero);
+              }
+              // 开始播放视频
               _controller.play();
               setState(() {});
             },
