@@ -15,9 +15,12 @@ class VideoDetailWidget2 extends StatefulWidget {
 class _VideoDetailWidget2State extends State<VideoDetailWidget2> {
   /// 创建视频播放器
   VideoPlayerController _controller;
+  StreamController<int> _streamController = StreamController();
   double _currentSlider = 0.0;
   Timer _timer;
   double _opacity = 1.0;
+  // 第一次进来 不显示进度条
+  bool _isFirst = true;
 
   /// 视频是否播放
   bool _isPlay = false;
@@ -39,14 +42,18 @@ class _VideoDetailWidget2State extends State<VideoDetailWidget2> {
       Duration totalDuration = _controller.value.duration;
       _currentSlider =
           currentDuration.inMilliseconds / totalDuration.inMilliseconds;
-      // 实时更新进度条
-      setState(() {});
+      if (_opacity == 1.0) {
+        // 实时更新进度条
+        _streamController.add(0);
+      }
     });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _streamController.close();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -115,11 +122,31 @@ class _VideoDetailWidget2State extends State<VideoDetailWidget2> {
                       });
                     }
                   },
-                  child: Icon(
-                    _controller.value.isPlaying
-                        ? Icons.pause
-                        : Icons.play_circle_fill,
-                    size: 44,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              colors: [
+                                Colors.black,
+                                Colors.black.withOpacity(0.3),
+                              ],
+                            ),
+                          ),
+                          child: Icon(
+                            _controller.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow_sharp,
+                            size: 34,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -156,6 +183,7 @@ class _VideoDetailWidget2State extends State<VideoDetailWidget2> {
   /// 开始播放视频
   void startPlayVideo() {
     _isPlay = true;
+    _isFirst = false;
     // 发送消息
     // 先暂停在播放
     if (widget.streamController != null) {
@@ -177,42 +205,51 @@ class _VideoDetailWidget2State extends State<VideoDetailWidget2> {
 
   // 下面进度条widget
   Widget bottomSliderWidget() {
-    return Row(
-      children: [
-        Text(
-          buildStartText(),
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.white,
-          ),
-        ),
-        Expanded(
-          child: Slider(
-            min: 0.0,
-            max: 1.0,
-            // 滑动条颜色
-            inactiveColor: Colors.white,
-            // 滑动条进度颜色
-            activeColor: Colors.redAccent,
-            value: _currentSlider,
-            onChanged: (value) {
-              kLog("当前滑动进度：$value");
-              setState(() {
-                _currentSlider = value;
-                _controller.seekTo(_controller.value.duration * value);
-              });
-            },
-          ),
-        ),
-        Text(
-          buildFinishText(),
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.white,
-          ),
-        )
-      ],
-    );
+    if (_isFirst) {
+      return Container();
+    } else {
+      return StreamBuilder(
+        stream: _streamController.stream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Row(
+            children: [
+              Text(
+                buildStartText(),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+              Expanded(
+                child: Slider(
+                  min: 0.0,
+                  max: 1.0,
+                  // 滑动条颜色
+                  inactiveColor: Colors.white,
+                  // 滑动条进度颜色
+                  activeColor: Colors.redAccent,
+                  value: _currentSlider,
+                  onChanged: (value) {
+                    kLog("当前滑动进度：$value");
+                    setState(() {
+                      _currentSlider = value;
+                      _controller.seekTo(_controller.value.duration * value);
+                    });
+                  },
+                ),
+              ),
+              Text(
+                buildFinishText(),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          );
+        },
+      );
+    }
   }
 
   // 开始时间

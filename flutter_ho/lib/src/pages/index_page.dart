@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ho/src/custom_widget/permisson_request_widget.dart';
 import 'package:flutter_ho/src/custom_widget/protocol_model.dart';
+import 'package:flutter_ho/src/pages/guide_page.dart';
 import 'package:flutter_ho/src/pages/welcome_page.dart';
 import 'package:flutter_ho/src/utils/constant_string.dart';
 
@@ -70,20 +71,33 @@ class _IndexPageState extends State<IndexPage> with ProtocolModel {
       appBar: AppBar(
         title: Text("启动"),
       ),
-      body: Center(
-        child: Image.asset("assets/images/EIBP-iOS.png"),
+      body: Container(
+        child: Center(
+          child: Image.asset("assets/images/EIBP-iOS.png"),
+        ),
       ),
     );
   }
 
-  void next() {
+  void next() async {
     //引导页面
-    // 倒计时页面
-    NavigatorUtils.pushPageByFade(
-      context: context,
-      targetPage: WelcomePage(),
-      isReplace: true,
-    );
+    bool isFirstStartApp = await SPUtil.getBool(kIsFirstStartApp);
+    if (isFirstStartApp == null) {
+      // 进入引导页
+      NavigatorUtils.pushPageByFade(
+        context: context,
+        targetPage: GuidePage(),
+        isReplace: true,
+      );
+    } else {
+      SPUtil.save(kIsFirstStartApp, true);
+      // 倒计时页面
+      NavigatorUtils.pushPageByFade(
+        context: context,
+        targetPage: WelcomePage(),
+        isReplace: true,
+      );
+    }
   }
 
   void initPermissionData() async {

@@ -23,7 +23,7 @@
                                 <rect key="frame" x="207" y="448" width="0.5" height="0.5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EIBP-iOS" translatesAutoresizingMaskIntoConstraints="NO" id="VMR-7B-gBb">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FinancialCloud-7" translatesAutoresizingMaskIntoConstraints="NO" id="VMR-7B-gBb">
                                 <rect key="frame" x="157" y="398" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="bH7-G2-Iju"/>
@@ -46,7 +46,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EIBP-iOS" width="258" height="258"/>
+        <image name="FinancialCloud-7" width="1024" height="1024"/>
         <image name="LaunchImage" width="0.5" height="0.5"/>
     </resources>
 </document>
