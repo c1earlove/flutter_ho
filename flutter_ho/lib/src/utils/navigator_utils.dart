@@ -51,22 +51,25 @@ class NavigatorUtils {
     @required Widget targetPage,
     bool isReplace = false,
     bool opaque = false,
+    int startMills = 400,
     Function(dynamic value) dismissCallBack,
   }) {
     PageRoute pageRoute = PageRouteBuilder(
-        opaque: opaque,
-        // 构建过度动画
-        transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return targetPage;
-        });
+      opaque: opaque,
+      // 构建过度动画
+      transitionsBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return targetPage;
+      },
+      transitionDuration: Duration(milliseconds: startMills),
+    );
     if (isReplace) {
       Navigator.of(context).pushReplacement(pageRoute).then((value) {
         if (dismissCallBack != null) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ho/src/pages/home_page.dart';
+import 'package:flutter_ho/src/utils/constant_string.dart';
 import 'package:flutter_ho/src/utils/navigator_utils.dart';
+import 'package:flutter_ho/src/utils/sp_utils.dart';
 
 class GuidePage extends StatefulWidget {
   GuidePage({Key key}) : super(key: key);
@@ -38,6 +40,7 @@ class _GuidePageState extends State<GuidePage> {
                 width: _currentIndex == 3 ? 180 : 0,
                 child: ElevatedButton(
                   onPressed: () {
+                    SPUtil.save(kIsFirstStartApp, true);
                     NavigatorUtils.pushPageByFade(
                       context: context,
                       targetPage: HomePage(),

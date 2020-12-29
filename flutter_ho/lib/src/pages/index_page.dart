@@ -90,7 +90,6 @@ class _IndexPageState extends State<IndexPage> with ProtocolModel {
         isReplace: true,
       );
     } else {
-      SPUtil.save(kIsFirstStartApp, true);
       // 倒计时页面
       NavigatorUtils.pushPageByFade(
         context: context,

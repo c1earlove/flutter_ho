@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ho/src/pages/home_page/home_item_page.dart';
+import 'package:flutter_ho/src/pages/user/mine_main_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
             HomeItemPage(flag: 1),
             HomeItemPage(flag: 2),
             Text("这是页面3"),
-            Text("这是页面4"),
+            MineMainPage(),
             // HomeItemPage(flag: 3),
             // HomeItemPage(flag: 4),
           ],
