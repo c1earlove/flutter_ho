@@ -33,7 +33,6 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="VMR-7B-gBb" secondAttribute="trailing" constant="137" id="9kD-Be-6GM"/>
                             <constraint firstItem="VMR-7B-gBb" firstAttribute="top" secondItem="Ydg-fD-yQy" secondAttribute="bottom" constant="354" id="i8u-hY-Gid"/>
                             <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="VMR-7B-gBb" secondAttribute="bottom" constant="364" id="kWs-uv-zao"/>
                             <constraint firstItem="VMR-7B-gBb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="137" id="oNH-46-Px1"/>

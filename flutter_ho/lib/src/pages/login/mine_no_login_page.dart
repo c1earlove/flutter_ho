@@ -86,7 +86,7 @@ class _MineNoLoginPageState extends State<MineNoLoginPage> {
         ),
       ),
       child: Text(
-        "登录",
+        "去登录",
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
