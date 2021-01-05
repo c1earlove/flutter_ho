@@ -129,8 +129,18 @@ class _LoginPageState extends State<LoginPage> {
       focusNode: _userNameNode,
       prefixIconData: Icons.person,
       controller: _userNameEditController,
+      keyboardType: TextInputType.number,
       submit: (value) {
         kLog("输入完成 -- $value");
+        if (value.length < 11) {
+          kLog("输入账号不合规则 -- $value");
+          FocusScope.of(context).requestFocus(_userNameNode);
+          return;
+        }
+        // 用户名输入框失去焦点
+        _userNameNode.unfocus();
+        // 密码输入框获取焦点
+        FocusScope.of(context).requestFocus(_passwordNode);
       },
       onChanged: (value) {
         kLog("正在输入 == $value");

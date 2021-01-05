@@ -28,6 +28,9 @@ class CustomTextFieldWidget extends StatelessWidget {
   /// 右侧小图标点击事件
   final Function() rightIconTap;
 
+  /// 键盘类型
+  final TextInputType keyboardType;
+
   const CustomTextFieldWidget({
     Key key,
     this.hintText,
@@ -39,6 +42,7 @@ class CustomTextFieldWidget extends StatelessWidget {
     this.focusNode,
     this.submit,
     this.rightIconTap,
+    this.keyboardType = TextInputType.phone,
   }) : super(key: key);
 
   @override
@@ -50,6 +54,7 @@ class CustomTextFieldWidget extends StatelessWidget {
       //实时输入回调
       onChanged: onChanged,
       onSubmitted: submit,
+      keyboardType: keyboardType,
       //是否隐藏文本
       obscureText: obscureText,
       //隐藏文本小圆点的颜色
