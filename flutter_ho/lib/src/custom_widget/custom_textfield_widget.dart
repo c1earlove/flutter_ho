@@ -31,6 +31,8 @@ class CustomTextFieldWidget extends StatelessWidget {
   /// 键盘类型
   final TextInputType keyboardType;
 
+  /// 输入框最大长度
+  final int maxLength;
   const CustomTextFieldWidget({
     Key key,
     this.hintText,
@@ -43,12 +45,14 @@ class CustomTextFieldWidget extends StatelessWidget {
     this.submit,
     this.rightIconTap,
     this.keyboardType = TextInputType.phone,
+    this.maxLength,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //构建输入框
     return TextField(
+      maxLength: maxLength,
       focusNode: focusNode,
       controller: controller,
       //实时输入回调

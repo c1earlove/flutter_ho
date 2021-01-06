@@ -5,6 +5,7 @@ import 'package:flutter_ho/src/custom_widget/custom_textfield_widget.dart';
 import 'package:flutter_ho/src/pages/bubble/bubble_widget.dart';
 import 'package:flutter_ho/src/utils/constant_string.dart';
 import 'package:flutter_ho/src/utils/log_util.dart';
+import 'package:flutter_ho/src/utils/toast_util.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -24,83 +25,100 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            // 第一层 背景
-            buildBackground(),
-            // 第二层 气泡
-            Positioned.fill(
-              child: BubbleWidget(),
-            ),
-            // 第三层 高斯模糊
-            Positioned.fill(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 0.3, sigmaY: 0.3),
-                child: Container(
-                  color: Colors.white.withOpacity(0.3),
+      body: GestureDetector(
+        // 空白点击 收起键盘
+        onTap: () {
+          _userNameNode.unfocus();
+          _passwordNode.unfocus();
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Stack(
+            children: [
+              // 第一层 背景
+              buildBackground(),
+              // 第二层 气泡
+              // Positioned.fill(
+              //   child: BubbleWidget(),
+              // ),
+              // 第三层 高斯模糊
+              Positioned.fill(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 0.3, sigmaY: 0.3),
+                  child: Container(
+                    color: Colors.white.withOpacity(0.3),
+                  ),
                 ),
               ),
-            ),
-            // 第四层 logo动画
-            buildHeroAnimation(),
-            // 第五层 输入框
-            Positioned(
-              left: 50,
-              right: 50,
-              bottom: 70,
-              child: Column(
-                children: [
-                  // 用户名输入框
-                  buildUserNameTF(),
-                  SizedBox(
-                    height: 20,
-                  ),
+              // 第四层 logo动画
+              buildHeroAnimation(),
+              // 第五层 输入框
+              Positioned(
+                left: 50,
+                right: 50,
+                bottom: 70,
+                child: Column(
+                  children: [
+                    // 用户名输入框
+                    buildUserNameTF(),
+                    SizedBox(
+                      height: 20,
+                    ),
 
-                  // 密码输入框
-                  buildPasswordTF(),
-                  SizedBox(height: 40),
-                  // 登录按钮
-                  Container(
-                    width: double.infinity,
-                    height: 44,
-                    child: ElevatedButton(
-                      child: Text(
-                        "登录",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                    // 密码输入框
+                    buildPasswordTF(),
+                    SizedBox(height: 40),
+                    // 登录按钮
+                    Container(
+                      width: double.infinity,
+                      height: 44,
+                      child: ElevatedButton(
+                        child: Text(
+                          "登录",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                         ),
+                        onPressed: () {
+                          if (_userNameEditController.text.length != 11) {
+                            ToastUtil.showToast(message: "输入的账号不合法");
+                            return;
+                          }
+                          if (_passwordEditController.text.length != 6) {
+                            ToastUtil.showToast(message: "输入的密码不合法");
+                            return;
+                          }
+                          goLogin();
+                        },
                       ),
-                      onPressed: () {},
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  // 注册按钮
-                  Container(
-                    width: double.infinity,
-                    height: 44,
-                    child: ElevatedButton(
-                      child: Text(
-                        "注册",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // 注册按钮
+                    Container(
+                      width: double.infinity,
+                      height: 44,
+                      child: ElevatedButton(
+                        child: Text(
+                          "注册",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                         ),
+                        onPressed: () {},
                       ),
-                      onPressed: () {},
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            // 第六层  关闭按钮
-            buildCloseWidget(context)
-          ],
+              // 第六层  关闭按钮
+              buildCloseWidget(context)
+            ],
+          ),
         ),
       ),
     );
@@ -109,7 +127,12 @@ class _LoginPageState extends State<LoginPage> {
   CustomTextFieldWidget buildPasswordTF() {
     return CustomTextFieldWidget(
       hintText: "密码",
-      submit: (value) {},
+      maxLength: 6,
+      submit: (value) {
+        if (value.length < 6) {
+          ToastUtil.showToast(message: "请输入6位以上的密码");
+        }
+      },
       focusNode: _passwordNode,
       prefixIconData: Icons.lock_open_outlined,
       suffixIconData: _isPasswordShow ? Icons.visibility_off : Icons.visibility,
@@ -129,11 +152,13 @@ class _LoginPageState extends State<LoginPage> {
       focusNode: _userNameNode,
       prefixIconData: Icons.person,
       controller: _userNameEditController,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
+      maxLength: 11,
       submit: (value) {
         kLog("输入完成 -- $value");
         if (value.length < 11) {
           kLog("输入账号不合规则 -- $value");
+          ToastUtil.showToast(message: "输入账号不合规则 ");
           FocusScope.of(context).requestFocus(_userNameNode);
           return;
         }
@@ -213,5 +238,18 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  // 去登录
+  void goLogin() {
+    String userName = _userNameEditController.text;
+    String password = _passwordEditController.text;
+    Map userInfo = {
+      "mobile": userName,
+      "password": password,
+    };
+    // 模拟登录成功
+
+    Navigator.of(context).pop(true);
   }
 }
